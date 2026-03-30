@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>April Fool 😂</title>
+
+    <style>
+        /* custom font */
+        @font-face{
+            font-family:'সাবির ২ UNICODE';
+            src:url('সাবির ২ UNICODE.ttf');
+        }
+
+        html,body{
+            margin:0;
+            padding:0;
+            height:100%;
+            overflow:hidden;
+            background:#111;
+            font-family:Arial;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            color:white;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* top text */
+        p{
+            position:fixed;
+            margin:0;
+            padding:0;
+            width:70%;
+            top:30px;
+            left:50%;
+            transform:translateX(-50%);
+            font-size:25px;
+            color:aqua;
+            text-align:center;
+            z-index:5;
+            font-family:'সাবির ২ UNICODE';
+        }
+
+        /* center content */
+        .box{
+            text-align:center;
+            position:relative;
+            z-index:2;
+            display:none; /* hidden first */
+        }
+
+        /* gradient text */
+        .title{
+            font-size:65px;
+            font-weight:bolder;
+            background:linear-gradient(90deg,#ff0080,#ffcc00,#00ffff,#ff0080);
+            background-size:400%;
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            animation:gradientMove 4s linear infinite, shake 1.2s infinite;
+            position:relative;
+            margin-bottom: 20px;
+        }
+
+        /* OK Button Style */
+        .ok-btn {
+            padding: 15px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(45deg, #ff0080, #ffcc00);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 0, 128, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            z-index: 10;
+            margin-top:80px;
+        }
+
+        .ok-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(255, 0, 128, 0.6);
+        }
+
+        .ok-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes gradientMove{
+            0%{background-position:0%}
+            100%{background-position:100%}
+        }
+
+        /* shake */
+        @keyframes shake{
+            0%{transform:translate(5,-8)}
+            25%{transform:translate(-5px,5px)}
+            50%{transform:translate(2px,-9px)}
+            75%{transform:translate(-8px,-2px)}
+            100%{transform:translate(0,0)}
+        }
+
+        /* wave */
+        .wave{
+            position:absolute;
+            left:0;
+            width:100%;
+            height:4px;
+            background:linear-gradient(90deg,cyan,magenta,yellow);
+            top:50%;
+            animation:waveMove 2s linear infinite;
+        }
+
+        @keyframes waveMove{
+            0%{transform:translateX(-100%)}
+            100%{transform:translateX(100%)}
+        }
+
+        /* balloons */
+        .balloon{
+            position:fixed;
+            bottom:-60px;
+            font-size:40px;
+            animation:balloonFloat 8s linear infinite;
+            cursor:pointer;
+        }
+
+        @keyframes balloonFloat{
+            0%{transform:translateY(0)}
+            100%{transform:translateY(-110vh)}
+        }
+
+        /* emoji */
+        .emoji{
+            position:fixed;
+            bottom:-40px;
+            font-size:30px;
+            animation:float 6s linear infinite;
+        }
+
+        @keyframes float{
+            0%{transform:translateY(0) rotate(0)}
+            100%{transform:translateY(-110vh) rotate(360deg)}
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <p id="topText">Order টি Confirm করতে যেকোনো একটি বেলুন এ চাপ দাও 🚩</p>
+
+    <div class="box" id="mainBox">
+        <div class="title">
+            APRIL FOOL
+            <div class="wave"></div>
+        </div>
+        
+        <button class="ok-btn" onclick="goToPayment()">OK</button>
+    </div>
+
+    <audio id="music" src="april-fool.mp3" loop></audio>
+
+    <script>
+        let started = false;
+        const music = document.getElementById("music");
+
+        /* payment page redirection */
+        function goToPayment() {
+            window.location.href = "payment.html";
+        }
+
+        /* balloon generator */
+        function balloon(){
+            const b = document.createElement("div");
+            b.className = "balloon";
+            b.innerHTML = "🎈";
+            b.style.left = Math.random() * 90 + "vw";
+
+            b.onclick = function(){
+                if(!started){
+                    started = true;
+                    // show main content
+                    document.getElementById("mainBox").style.display = "block";
+                    // change text
+                    document.getElementById("topText").innerText = "[ ADVANCE ✓ ]";
+                    // play music
+                    music.play();
+                    // start emoji
+                    startEmoji();
+                }
+            }
+
+            document.body.appendChild(b);
+            setTimeout(() => b.remove(), 8000);
+        }
+
+        setInterval(balloon, 900);
+
+        /* emoji animation */
+        function startEmoji(){
+            setInterval(() => {
+                const e = document.createElement("div");
+                e.className = "emoji";
+                const emojis = ["😂","🤣","😜","🤡","🎉"];
+                e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                e.style.left = Math.random() * 90 + "vw";
+                document.body.appendChild(e);
+                setTimeout(() => e.remove(), 6000);
+            }, 400);
+        }
+    </script>
+
+</body>
+</html>

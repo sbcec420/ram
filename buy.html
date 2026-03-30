@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Product Message</title>
+    <style>
+        /* ফন্ট সেটআপ */
+        @font-face {
+            font-family: 'Sabir2';
+            src: url('সাবির ২ UNICODE.ttf');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- Meesho স্টাইল লোডিং সেকশন --- */
+        #loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        .meesho-m-loader {
+            width: 70px; 
+            height: 70px;
+            overflow: visible;
+        }
+
+        .m-path {
+            fill: none;
+            stroke-width: 12px;
+            stroke-linecap: round;
+        }
+
+        .bg-path {
+            stroke: #f3e5f5; /* হালকা বেগুনি ব্যাকগ্রাউন্ড */
+        }
+
+        .anim-path {
+            stroke: #9c27b0; /* Meesho Purple অ্যানিমেশন */
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: draw-and-erase 2.5s ease-in-out infinite;
+        }
+
+        @keyframes draw-and-erase {
+            0% { stroke-dashoffset: 600; }
+            45% { stroke-dashoffset: 0; }
+            55% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -600; }
+        }
+
+        .loader-text {
+            margin-top: 15px;
+            font-family: sans-serif;
+            color: #777;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* --- মূল পেজ স্টাইল --- */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #2c003e 0%, #000000 100%);
+            font-family: 'Sabir2', 'Hind Siliguri', sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            box-shadow: 10vw 20vh 2px #fff, 50vw 40vh 1px #fff, 80vw 10vh 2px #fff, 30vw 80vh 1px #fff, 70vw 70vh 2px #fff;
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
+        .card {
+            background: rgba(44, 0, 62, 0.4);
+            border: 2px solid #ffd700;
+            backdrop-filter: blur(15px);
+            padding: 40px 30px;
+            border-radius: 25px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            animation: glow 3s infinite alternate;
+            
+            /* শুরুতে কার্ডটি লুকিয়ে রাখা হচ্ছে লোডারের জন্য */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(216, 27, 96, 0.2); }
+            to { box-shadow: 0 0 40px rgba(255, 215, 0, 0.4); }
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #f8f8f8;
+            font-weight: normal;
+        }
+
+        .rupee {
+            color: #ffd700;
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: block;
+            margin: 15px 0;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .message-p {
+            color:lightgreen;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .continue-btn {
+            background: linear-gradient(45deg, #ffd700, #ff8c00);
+            color: #000;
+            border: none;
+            padding: 16px 45px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+            text-transform: uppercase;
+        }
+
+        .continue-btn:hover {
+            transform: scale(1.05);
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(45deg, #fff, #ffd700);
+        }
+
+        .footer-emoji {
+            display: block;
+            margin-top: 15px;
+            font-size: 1.5rem;
+            color:teal;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader-wrapper">
+        <svg class="meesho-m-loader" viewBox="0 0 100 100">
+            <path class="m-path bg-path" d="M 15 90 V 40 C 15 10, 40 10, 40 40 V 90 V 40 C 40 10, 65 10, 65 40 V 90" />
+            <path class="m-path anim-path" d="M 15 90 V 40 C 15 10, 40 10, 40 40 V 90 V 40 C 40 10, 65 10, 65 40 V 90" />
+        </svg>
+        <div class="loader-text">Please wait...</div>
+    </div>
+
+    <div class="card" id="main-card">
+        <h2>
+            " এই product টা এতটাই সুন্দর যে এটা আমি চাঁদ থেকে পৃথিবীতে পৌঁছাবো তার জন্য delivery charge "
+        </h2>
+        
+        <div class="rupee">49,990 টাকা</div>
+
+        <p class="message-p">
+            যদি তুমি order করতে চাও তো Continue button এ ক্লিক করে order টি সম্পূর্ণ করো।
+        </p>
+
+        <a href="april-fool-2.html" class="continue-btn">Continue ➔</a>
+        
+        <span class="footer-emoji">ধন্যবাদ 🌸</span>
+    </div>
+
+    <script>
+        window.onload = () => {
+            const loader = document.getElementById("loader-wrapper");
+            const card = document.getElementById("main-card");
+
+            // যেহেতু কোনো এক্সট্রা ইমেজ নেই, তাই ১.৫ সেকেন্ড ডিলে দিয়ে কার্ডটি দেখানো হবে
+            setTimeout(() => {
+                loader.style.opacity = "0";
+                loader.style.visibility = "hidden";
+                card.classList.add("show");
+            }, 1500);
+        };
+    </script>
+
+</body>
+</html>
