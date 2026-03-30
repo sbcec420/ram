@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"> 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.">
+    <title>Home</title>
+    
+    <link rel="preload" as="image" href="profile.png">
+    <link rel="preload" as="image" href="coin.png">
+    <link rel="preload" as="image" href="sujit.jpg">
+    <link rel="stylesheet" href="style.css">  
+
+    <style>
+        /* === Full Screen Loader CSS === */
+        #loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader-container { text-align: center; }
+        .meesho-m-loader { width: 80px; height: 80px; overflow: visible; }
+        .m-path { fill: none; stroke-width: 12px; stroke-linecap: round; }
+        .bg-path { stroke: #E4C7ED; }
+        .anim-path {
+            stroke: #9c27b0;
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: draw-and-erase 3s ease-in-out infinite;
+        }
+
+        @keyframes draw-and-erase {
+            0% { stroke-dashoffset: 600; }
+            45% { stroke-dashoffset: 0; }
+            55% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -600; }
+        }
+
+        .loading-text {
+            margin-top: 15px;
+            color: #777;
+            font-size: 18px;
+            font-weight: 500;
+            font-family: sans-serif;
+        }
+
+        /* Skeleton Animation Keyframes */
+        @keyframes shimmer {
+            0% { background-position: -468px 0; }
+            100% { background-position: 468px 0; }
+        }
+
+        .skeleton-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f6f7f8;
+            background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+            background-repeat: no-repeat;
+            background-size: 800px 100%;
+            display: inline-block;
+            animation: shimmer 1.5s infinite linear;
+            z-index: 5;
+            border-radius: inherit;
+        }
+
+        /* Hide skeleton once loaded */
+        .loaded .skeleton-overlay {
+            display: none;
+        }
+
+        /* আপনার অরিজিনাল ফন্ট সেটিংস */
+        *{ margin:0; padding:0; box-sizing:border-box; user-select:none; font-family:Arial,sans-serif, সাবির ২ UNICODE; }
+        @font-face { font-family:সাবির ২ UNICODE; src:url("সাবির ২ UNICODE.ttf"); }
+        
+        .category-text { font-size:11px; }
+        nav { height:56px; width:100%; display:flex; justify-content:space-between; align-items:center; padding:10px; }
+        .profile-section { height:43px; width:145px; display:flex; gap:8px; cursor: pointer; position: relative; }
+        .top-icon { height:43px; width:127px; display:flex; justify-content:flex-end; gap:12px; }
+        .profile { height:100%; width:43px; position: relative; }
+        .top-bar-icon { height:26px; width:26px; cursor: pointer; position: relative; }
+        .search-box { height:56px; width:100%; top:0; position:sticky; background:white; z-index:10; display:flex; align-items:center; padding:8px 14px; }
+        .search-box-items { border:.9px solid rgb(139,139,139); height:36.5px; width:100%; border-radius:12px; padding:0 5px; display:flex; align-items:center; justify-content:space-between; }
+        .search-icon { height:25px; width:25px; cursor: pointer; position: relative; }
+        input[type="search"]::placeholder { color: #999; font-size:12px; }
+        .category { height:170px; width:100%; padding-left:15px; display:flex; flex-direction:column; overflow:scroll; }
+        .category-box { height:90px; width:100%; margin-top:-3px; display:flex; align-items:center; gap:16px; }
+        .category-box-items { height:auto; width:60px; flex:0 0 60px; cursor: pointer; position: relative; }
+        .category-text { font-size:11.5px; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .gender { height:50px; width:100%; position:sticky; top:54px; z-index:10; background:url("gender.png"); background-size:auto 47px; background-repeat:no-repeat; background-position:left; margin-top:-8px; }
+        .products{ display:grid; grid-template-columns:repeat(2,1fr); gap:0px; padding:0px; }
+        .card{ background:#fff; border-radius:0px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05); border:1px solid #ddd; position: relative; }
+        .image-box{ position:relative; width:100%; aspect-ratio: 1/1; }
+        .image-box img{ width:100%; height:100%; object-fit:cover; }
+        .wishlist{ position:absolute; top:5px; right:22px; background:#fff; height:32px; width:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:0 2px 6px rgba(0,0,0,0.2); cursor: pointer; z-index:6; }
+        .card-body{ padding:10px; position: relative; }
+        .title{ font-size:9px; color:#6d7278; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .price{ font-size:20px; font-weight:570; font-family:sans-serif; margin-top:4px; }
+        .offer{ color:#008000; font-size:10.3px; margin-top:5px; }
+        .delivery{ font-size:11px; color:#6d7278; margin-top:5px; font-weight:500; }
+        .rating-row{ display:flex; align-items:center; gap:6px; margin-top:6px; }
+        .rating{ background:#038d63; color:#fff; padding:3px 5px; border-radius:13px; font-size:12px;font-weight:450; }
+        .count{ font-size:12px; color:#666; }
+        body { padding-bottom: 70px; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background-color: #ffffff; display: flex; justify-content: space-around; align-items: center; border-top: 1.8px solid #e0e0e0; z-index: 9999; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; flex: 1; color: #6d7278; cursor: pointer; }
+        .nav-item img { width: 32px; height: 32px; object-fit: contain; }
+        .nav-item span { font-size: 10px; font-family: 'Poppins', sans-serif; }
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: none; justify-content: center; align-items: center; z-index: 10000; backdrop-filter: blur(5px); }
+        .popup-card { background: white; width: 85%; max-width: 350px; padding: 30px 20px; border-radius: 20px; text-align: center; font-family: 'সাবির ২ UNICODE', sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: popupScale 0.3s ease-out; }
+        @keyframes popupScale { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .emoji-header { font-size: 50px; margin-bottom: 15px; }
+        .popup-message { font-size: 18px; line-height: 1.5; color: #399; margin-bottom: 20px; }
+        .highlight { color: #ff0000; font-weight: bold; }
+        .popup-btn { background:purple; color: white; border: none; padding: 12px 25px; border-radius: 50px; font-size: 16px; font-family: 'সাবির ২ UNICODE'; cursor: pointer; }
+        
+        .image-box img{ width:100%; height:100%; }
+        .image-box .ceo-badge{ width:70px; height:auto; position:absolute; top:135px; left:105px; transform: rotate(15deg); z-index: 7; }
+        .image-box .sale-badge{ width:70px; height:auto; position:absolute; top:0px; left:0px; transform: rotate(0deg); z-index: 7; }
+        .image-box .partner-badge{ width:140px; height:auto; position:absolute; top:143px; left:30px; transform: rotate(0deg); z-index: 7; }
+        .image-box .trasted-badge{ width:60px; height:auto; position:absolute; top:273px; left:113px; transform: rotate(0deg); z-index: 7; }
+    </style>
+</head>
+<body>
+
+<div id="loader-overlay">
+    <div class="loader-container">
+        <svg class="meesho-m-loader" viewBox="0 0 100 100">
+            <path class="m-path bg-path" d="M 15 90 V 40 C 15 10, 40 10, 40 40 V 90 V 40 C 40 10, 65 10, 65 40 V 90" />
+            <path class="m-path anim-path" d="M 15 90 V 40 C 15 10, 40 10, 40 40 V 90 V 40 C 40 10, 65 10, 65 40 V 90" />
+        </svg>
+        <div class="loading-text">Please wait...</div>
+    </div>
+</div>
+
+<audio id="roastAudio" src="ja-yaha-se-nikal.mp3"></audio>
+
+<nav>
+    <div class="profile-section" onclick="showRoast('profile')">
+       <div class="skeleton-overlay"></div>
+       <div class="profile"><img src="profile.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"></div>
+       <div>
+          <div><p style="font-size:12.4px;opacity:68%;font-family:poppins;padding-top:2px">Hello,</p></div>
+          <div><img src="coin.png" style="height:25px;width:67px;margin-left:-3px;" onload="removeSkeleton(this)"></div>
+       </div>
+    </div>
+    <div class="top-icon" >
+       <div class="top-bar-icon" onclick="showRoast('wishlist')"><div class="skeleton-overlay"></div><img src="wishing-list.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"></div>
+       <div class="top-bar-icon" onclick="showRoast('notification')"><div class="skeleton-overlay"></div><img src="notification.png" style="height:100%;width:100%;margin-top:3px;" onload="removeSkeleton(this)"></div>
+       <div class="top-bar-icon" onclick="showRoast('cart')"><div class="skeleton-overlay"></div><img src="cart.png" style="height:100%;width:100%;margin-top:2px;" onload="removeSkeleton(this)"></div>
+    </div>
+</nav>
+
+<div class="search-box">
+     <div class="search-box-items">
+         <div class="search-icon"><div class="skeleton-overlay"></div><img src="search.png" style="height:100%;width:100%" onload="removeSkeleton(this)"></div>
+         <div class="search-icon" style="width:210px; height:100%; margin-left:-7px;padding-top:4px;"><input type="search" placeholder="Search by Keywords or Product ID" style="height:100%;width:100%;border:none;outline:none;"></div>
+         <div class="search-icon" onclick="showRoast('mic')"><div class="skeleton-overlay"></div><img src="mic.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"></div>
+         <div class="search-icon" onclick="showRoast('camera')"><div class="skeleton-overlay"></div><img src="camera.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"></div>
+     </div>
+</div>
+
+<div class="category" >
+    <div class="category-box"> 	
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="category.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">All category</p></div>
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="saree.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">Saree</p></div>
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="home.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">Home</p></div>
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="beauty.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">Beauty</p></div>
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="lehengas.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">Lehengas</p></div>
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="man fashion.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">Man fashion</p></div>
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="home.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">Footwear</p></div>
+     </div>
+     <div class="category-box" style="margin-top:-5px;" >
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="kurti and dress.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">kurti & dress</p></div>
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="western.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">Western</p></div>
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="kids.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">Kids</p></div>
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="footwear.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">Footwear</p></div>
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="man fashion.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">Man fashion</p></div>
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="beauty.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">Footwear</p></div>
+        <div class="category-box-items" onclick="showRoast('category')"><div class="skeleton-overlay"></div><img src="saree.png" style="height:100%;width:100%;" onload="removeSkeleton(this)"><p class="category-text">Footwear</p></div>
+     </div>
+</div>
+
+<div class="gender" ></div>
+
+<div class="products">
+
+    
+    
+    <!-- Row 3 -->
+    <a href="niranjan-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box"><img src="partner.png" class="partner-badge"><div class="wishlist">♡</div><img src="niranjan.jpg" onload="removeSkeleton(this)"></div>
+            <div class="card-body">
+                <p class="title">NIRANJAN BARMAN , luxury edition</p>
+                <p class="price">₹41,25,00,000</p>
+                <p class="offer">₹35,15,00,000 with 5 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">4.9 ★</div><span class="count">(52,456)</span></div>
+            </div>
+        </div>
+    </a>
+    
+    <a href="sujit-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box">
+                <img src="ceo.png" class="ceo-badge">
+                <div class="wishlist">♡</div>
+                <img src="sujit.jpg" onload="removeSkeleton(this)">
+            </div>
+            <div class="card-body">
+                <p class="title">SUJIT BARMAN , premium collection</p>
+                <p class="price">₹85 Crore</p>
+                <p class="offer">₹80 crore with 3 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">5.0 ★</div><span class="count">(58.9k)</span></div>
+            </div>
+        </div>
+    </a>
+    
+    <a href="ajay-product-1.html" style="text-decoration:none; color:inherit" >
+    <div class="card">
+    <div class="skeleton-overlay"></div>
+    <div class="image-box"><div class="wishlist">♡</div><img src="ajay-scroll-1.jpg" onload="removeSkeleton(this)"></div>
+    <div class="card-body">
+    <p class="title">AJAY BARMAN , urban collection</p>
+    <p class="price">₹95,00,000</p>
+    <p class="offer">₹85,50,000 with 6 Offers</p>
+    <p class="delivery">Free Delivery</p>
+    <div class="rating-row"><div class="rating">4.9 ★</div><span class="count">(42,567)</span></div>
+    </div>
+    </div>
+    </a>
+    
+    
+    <a href="manik1-product-1.html" style="text-decoration:none; color:inherit" >
+    <div class="card">
+    <div class="skeleton-overlay"></div>
+    <div class="image-box"><img src="trasted.png" class="trasted-badge"><div class="wishlist">♡</div><img src="manik1-scroll-1.jpg" onload="removeSkeleton(this)"></div>
+    <div class="card-body">
+    <p class="title">MANIK BARMAN , gold edition</p>
+    <p class="price">₹4,75,00,000</p>
+    <p class="offer">₹4,50,00,000 with 15 Offers</p>
+    <p class="delivery">Free Delivery</p>
+    <div class="rating-row"><div class="rating">5.0 ★</div><span class="count">(1,23,456)</span></div>
+    </div>
+    </div>
+    </a>
+    
+    <a href="uday-product-1.html" style="text-decoration:none; color:inherit" >
+    <div class="card">
+    <div class="skeleton-overlay"></div>
+    <div class="image-box"><div class="wishlist">♡</div><img src="uday-scroll-1.jpg" onload="removeSkeleton(this)"></div>
+    <div class="card-body">
+    <p class="title">UDAY BARMAN , supreme elegance</p>
+    <p class="price">₹3,50,00,000</p>
+    <p class="offer">₹3,25,00,000 with 12 Offers</p>
+    <p class="delivery">Free Delivery</p>
+    <div class="rating-row"><div class="rating">4.9 ★</div><span class="count">(89,234)</span></div>
+    </div>
+    </div>
+    </a>
+    
+    <a href="arup-product-1.html" style="text-decoration:none; color:inherit" >
+    <div class="card">
+    <div class="skeleton-overlay"></div>
+    <div class="image-box"><div class="wishlist">♡</div><img src="arup-scroll-1.jpg" onload="removeSkeleton(this)"></div>
+    <div class="card-body">
+    <p class="title">ARUP BARMAN , royal heritage</p>
+    <p class="price">₹1,25,00,000</p>
+    <p class="offer">₹1,15,00,000 with 7 Offers</p>
+    <p class="delivery">Free Delivery</p>
+    <div class="rating-row"><div class="rating">4.8 ★</div><span class="count">(28,456)</span></div>
+    </div>
+    </div>
+    </a>
+    
+    <a href="sipen-product-1.html" style="text-decoration:none; color:inherit" >
+    <div class="card">
+    <div class="skeleton-overlay"></div>
+    <div class="image-box"><img src="sale.png" class="sale-badge"><div class="wishlist">♡</div><img src="sipen-scroll-1.jpg" onload="removeSkeleton(this)"></div>
+    <div class="card-body">
+    <p class="title">SIPEN BARMAN , classic masterpiece</p>
+    <p class="price">₹2,85,00,000</p>
+    <p class="offer">₹2,65,00,000 with 10 Offers</p>
+    <p class="delivery">Free Delivery</p>
+    <div class="rating-row"><div class="rating">5.0 ★</div><span class="count">(67,890)</span></div>
+    </div>
+    </div>
+    </a>
+    
+    
+    <!-- Row 4 -->
+    <a href="suman-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box"><img src="trasted.png" class="trasted-badge"><div class="wishlist">♡</div><img src="suman.jpg" onload="removeSkeleton(this)"></div>
+            <div class="card-body">
+                <p class="title">SUMAN BARMAN , designer wear</p>
+                <p class="price">₹95,50,000</p>
+                <p class="offer">₹88,99,999 with 4 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">4.8 ★</div><span class="count">(15,234)</span></div>
+            </div>
+        </div>
+    </a>
+    
+    <a href="kapil-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box"><div class="wishlist">♡</div><img src="kapil.jpg" onload="removeSkeleton(this)"></div>
+            <div class="card-body">
+                <p class="title">KAPIL DEB PAUL , exclusive range</p>
+                <p class="price">₹1,75,00,000</p>
+                <p class="offer">₹1,60,00,000 with 6 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">4.9 ★</div><span class="count">(21,567)</span></div>
+            </div>
+        </div>
+    </a>
+    
+    <!-- Row 5 -->
+    <a href="animesh-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box"><div class="wishlist">♡</div><img src="animesh.jpg" onload="removeSkeleton(this)"></div>
+            <div class="card-body">
+                <p class="title">ANIMESH BARMAN , platinum range</p>
+                <p class="price">₹2,55,00,000</p>
+                <p class="offer">₹2,40,00,000 with 7 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">4.3 ★</div><span class="count">(34,567)</span></div>
+            </div>
+        </div>
+    </a>
+    
+    <a href="manoj-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box"><img src="sale.png" class="sale-badge"><div class="wishlist">♡</div><img src="manoj.jpg" onload="removeSkeleton(this)"></div>
+            <div class="card-body">
+                <p class="title">MANOJ BARMAN , signature style</p>
+                <p class="price">₹65,75,000</p>
+                <p class="offer">₹59,99,999 with 4 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">4.6 ★</div><span class="count">(6,789)</span></div>
+            </div>
+        </div>
+    </a>
+    
+    <!-- Row 6 -->
+    <a href="haraprasad-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box"><div class="wishlist">♡</div><img src="haraprasad.jpg" onload="removeSkeleton(this)"></div>
+            <div class="card-body">
+                <p class="title">HARAPRASAD DAS , royal collection</p>
+                <p class="price">₹2,10,00,000</p>
+                <p class="offer">₹1,95,00,000 with 8 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">4.9 ★</div><span class="count">(32,456)</span></div>
+            </div>
+        </div>
+    </a>
+
+    <a href="dipankar-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box"><div class="wishlist">♡</div><img src="dipankar.jpg" onload="removeSkeleton(this)"></div>
+            <div class="card-body">
+                <p class="title">DIPANKAR DAS , vintage series</p>
+                <p class="price">₹55,99,999</p>
+                <p class="offer">₹49,99,999 with 3 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">4.5 ★</div><span class="count">(4,234)</span></div>
+            </div>
+        </div>
+    </a>
+
+    <!-- Row 7 -->
+    <a href="rajib-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box"><img src="trasted.png" class="trasted-badge"><div class="wishlist">♡</div><img src="rajib.jpg" onload="removeSkeleton(this)"></div>
+            <div class="card-body">
+                <p class="title">RAJIB BARMAN , elite collection</p>
+                <p class="price">₹1,45,00,000</p>
+                <p class="offer">₹1,35,00,000 with 5 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">4.8 ★</div><span class="count">(18,901)</span></div>
+            </div>
+        </div>
+    </a>
+
+    <a href="mrinal-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box"><div class="wishlist">♡</div><img src="mrinal.jpg" onload="removeSkeleton(this)"></div>
+            <div class="card-body">
+                <p class="title">MRINAL BARMAN , premium plus</p>
+                <p class="price">₹1,88,88,888</p>
+                <p class="offer">₹1,75,00,000 with 7 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">4.9 ★</div><span class="count">(27,890)</span></div>
+            </div>
+        </div>
+    </a>
+    
+    <!-- Row 8 -->
+    <a href="manik-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box"><img src="sale.png" class="sale-badge"><div class="wishlist">♡</div><img src="manik.jpg" onload="removeSkeleton(this)"></div>
+            <div class="card-body">
+                <p class="title">MANIK BARMAN , diamond series</p>
+                <p class="price">₹3,25,00,000</p>
+                <p class="offer">₹3,00,00,000 with 9 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">5.0 ★</div><span class="count">(45,678)</span></div>
+            </div>
+        </div>
+    </a>
+    
+    <a href="sangit-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box"><div class="wishlist">♡</div><img src="sangit.jpg" onload="removeSkeleton(this)"></div>
+            <div class="card-body">
+                <p class="title">SANGIT SINGHA , platinum range</p>
+                <p class="price">₹2,75,00,000</p>
+                <p class="offer">₹2,50,00,000 with 9 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">4.8 ★</div><span class="count">(34,567)</span></div>
+            </div>
+        </div>
+    </a>
+    
+    <!-- Row 9: New Products - Arup, Sipen, Uday, Manik1, Prasanta -->
+   
+    <!-- Row 10 -->
+   
+    
+    <!-- Row 11 -->
+    <a href="prasanta-product-1.html" style="text-decoration:none; color:inherit" >
+        <div class="card">
+            <div class="skeleton-overlay"></div>
+            <div class="image-box"> <div class="wishlist">♡</div><img src="prasanta-scroll-1.jpg" onload="removeSkeleton(this)"></div>
+            <div class="card-body">
+                <p class="title">PRASANTA BARMAN , luxury platinum</p>
+                <p class="price">₹5,50,00,000</p>
+                <p class="offer">₹5,25,00,000 with 20 Offers</p>
+                <p class="delivery">Free Delivery</p>
+                <div class="rating-row"><div class="rating">5.0 ★</div><span class="count">(2,34,567)</span></div>
+            </div>
+        </div>
+    </a>
+    
+    
+</div>
+
+<footer class="bottom-nav">
+  <div class="nav-item active"><img src="home-active.png"><span>Home</span></div>
+  <div class="nav-item" onclick="showRoast('category')"><img src="category.png"><span>Categories</span></div>
+  <div class="nav-item" onclick="showRoast('mall')"><img src="mall.png"><span>Mall</span></div>
+  <div class="nav-item" onclick="showRoast('video')"><img src="video-finds.png"><span>Video Finds</span></div>
+  <div class="nav-item" onclick="showRoast('order')"><img src="order.png"><span>My Orders</span></div>
+</footer>
+
+<div id="wishlist-popup" class="popup-overlay">
+  <div class="popup-card">
+  <div id="popup-emoji" class="emoji-header">🤣</div>
+  <p id="popup-message" class="popup-message"></p>
+  <button onclick="closePopup()" class="popup-btn">OK</button>
+  </div>
+</div>
+
+<script>
+    // === Advanced Preloader Script ===
+    (function() {
+        const images = document.querySelectorAll('img');
+        let loadedCount = 0;
+        const totalImages = images.length;
+        const loader = document.getElementById('loader-overlay');
+
+        function checkProgress() {
+            loadedCount++;
+            if ((loadedCount / totalImages) >= 0.5) {
+                hideLoader();
+            }
+        }
+
+        function hideLoader() {
+            if (loader) {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        images.forEach(img => {
+            if (img.complete) {
+                checkProgress();
+            } else {
+                img.addEventListener('load', checkProgress);
+                img.addEventListener('error', checkProgress);
+            }
+        });
+
+        window.addEventListener('load', hideLoader);
+        setTimeout(hideLoader, 9000);
+    })();
+
+    function removeSkeleton(img) {
+        const parent = img.closest('.card') || img.closest('.category-box-items') || img.closest('.profile-section') || img.closest('.top-bar-icon') || img.closest('.search-icon');
+        if (parent) {
+            const skeleton = parent.querySelector('.skeleton-overlay');
+            if (skeleton) skeleton.style.display = 'none';
+        }
+    }
+
+    window.addEventListener('pageshow', function() {
+        document.querySelectorAll('img').forEach(img => {
+            if (img.complete) removeSkeleton(img);
+        });
+    });
+
+    const roastAudio = document.getElementById('roastAudio');
+    const popup = document.getElementById('wishlist-popup');
+    const msgText = document.getElementById('popup-message');
+    const emojiHeader = document.getElementById('popup-emoji');
+
+    function showRoast(type) {
+        roastAudio.currentTime = 0;
+        roastAudio.play();
+        let content = "", emoji = "🤣";
+        switch(type) {
+            case 'wishlist':
+                content = "Hey <span class='highlight'>ভিখারী</span>, তোমার account এ এত টাকা নেই তাই Wishing List এ রেখে কোনো লাভ নেই! তুমি শুধু এটা তোমার স্বপ্নের দুনিয়ায় রাখো 🤣";
+                emoji = "🤡"; break;
+            case 'cart':
+                content = "কার্টে তো সব ভরেছো, পেমেন্ট করার সময় কী <span class='highlight'>কিডনি বিক্রি</span> করবে? খালি করো বলছি!";
+                emoji = "🛒"; break;
+            case 'profile':
+                content = "প্রোফাইল দেখে কী হবে? তোমার <span class='highlight'>ব্যাঙ্ক ব্যালেন্স</span> তো জিরো!";
+                emoji = "👤"; break;
+            case 'mic':
+                content = "ভয়েস সার্চ দিয়ে লাভ নেই, তোমার <span class='highlight'>কন্ঠ শুনে</span> অ্যাপই হ্যাং হয়ে যাবে!";
+                emoji = "🎤"; break;
+            case 'camera':
+                content = "ক্যামেরা দিয়ে কী খুঁজছো? <span class='highlight'>হারিয়ে যাওয়া ভাগ্য?</span> ওটা এখানে নেই!";
+                emoji = "📸"; break;
+            case 'notification':
+                content = "নোটিফিকেশন চেক করে লাভ নেই, তোমার জন্য শুধু <span class='highlight'>পেমেন্ট ফেইলড</span> মেসেজই আসবে!";
+                emoji = "🔔"; break;
+            case 'category':
+                content = "এত ক্যাটাগরি দেখে কী হবে? পকেটে তো সেই <span class='highlight'>শূন্য</span> একটা কাজ করো, সবজি বাজারে যাও।";
+                emoji = "🥦"; break;
+            case 'mall':
+                content = "মল-এ এসেছো? এখানে শুধু বড়লোকদের এন্ট্রি। তুমি বরং <span class='highlight'>ফুটপাতে</span> ট্রাই করো।";
+                emoji = "🛍️"; break;
+            case 'video':
+                content = "রিলস দেখে সময় নষ্ট না করে কাজে মন দাও। নাহলে সারাজীবন শুধু <span class='highlight'>অন্যের কেনা জিনিসই</span> দেখবে।";
+                emoji = "🎥"; break;
+            case 'order':
+                content = "অর্ডার লিস্ট তোমার <span class='highlight'>পকেটের মতোই ফাঁকা</span>! আগে কামাই করো!";
+                emoji = "📦"; break;
+        }
+        msgText.innerHTML = content;
+        emojiHeader.innerHTML = emoji;
+        popup.style.display = 'flex';
+    }
+
+    document.querySelectorAll('.wishlist').forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            e.preventDefault();
+            showRoast('wishlist');
+        });
+    });
+
+    function closePopup() { popup.style.display = 'none'; }
+</script>
+</body>
+</html>
