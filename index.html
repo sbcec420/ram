@@ -13,6 +13,20 @@
 
     <style>
         /* === Full Screen Loader CSS === */
+        
+        @media screen and (orientation: landscape) {
+        body {
+        transform: rotate(-90deg);
+        transform-origin: left top;
+        width: 100vh;
+        height: 100vw;
+        overflow-x: hidden;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        }
+        }
+
         #loader-overlay {
             position: fixed;
             top: 0;
@@ -26,6 +40,7 @@
             z-index: 100000;
             transition: opacity 0.5s ease;
         }
+        
 
         .loader-container { text-align: center; }
         .meesho-m-loader { width: 80px; height: 80px; overflow: visible; }
@@ -213,7 +228,7 @@
         </div>
     </a>
     
-    <a href="ceo.html" style="text-decoration:none; color:inherit" >
+    <a href="sujit-product-1.html" style="text-decoration:none; color:inherit" >
         <div class="card">
             <div class="skeleton-overlay"></div>
             <div class="image-box">
@@ -302,6 +317,20 @@
     </div>
     </a>
     
+    <!-- Hempada Barman -->
+    <a href="hempada-product-1.html" style="text-decoration:none; color:inherit" >
+    <div class="card">
+    <div class="skeleton-overlay"></div>
+    <div class="image-box"><img src="sale.png" class="sale-badge"><div class="wishlist">♡</div><img src="hempada.jpg" onload="removeSkeleton(this)"></div>
+    <div class="card-body">
+    <p class="title">HEMPADA BARMAN , vintage classic</p>
+    <p class="price">₹1,65,00,000</p>
+    <p class="offer">₹1,50,00,000 with 8 Offers</p>
+    <p class="delivery">Free Delivery</p>
+    <div class="rating-row"><div class="rating">4.8 ★</div><span class="count">(45,678)</span></div>
+    </div>
+    </div>
+    </a>
     
     <!-- Row 4 -->
     <a href="suman-product-1.html" style="text-decoration:none; color:inherit" >
