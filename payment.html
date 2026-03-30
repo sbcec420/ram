@@ -1,0 +1,219 @@
+[]<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Premium Payment Interface</title>
+    <style>
+        @font-face {
+            font-family: 'Sabir2';
+            src: url('সাবির ২ UNICODE.ttf');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #5f259f 0%, #4d148c 40%, #2b125a 100%);
+            font-family: 'Sabir2', sans-serif;
+            overflow: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* মেইন কার্ড */
+        .card {
+            background: #ffffff;
+            border-radius: 25px;
+            padding: 35px 20px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            max-width: 380px;
+            width: 90%;
+            animation: slideUp 0.8s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* কালারফুল হাইলাইটেড টেক্সট */
+        h2 {
+            font-size: 1.25rem;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            background: #299;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .btn-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 15px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Sabir2', sans-serif;
+        }
+
+        .pay-now {
+            background: linear-gradient(90deg, #673ab7, #512da8);
+            color: white;
+            box-shadow: 0 8px 20px rgba(103, 58, 183, 0.3);
+        }
+
+        .qr-toggle {
+            background: #f3e5f5;
+            color: #512da8;
+            border: 2px solid #512da8;
+        }
+
+        /* পপ-আপ স্টাইল (Modal) */
+        #qr-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 25px;
+            border-radius: 30px;
+            position: relative;
+            max-width: 320px;
+            width:100%;
+            text-align: center;
+            transform: scale(0.5);
+            opacity: 0;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #qr-popup.active .popup-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* ক্লোজ বাটন (X) */
+        .close-x {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: #ff4d4d;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            cursor: pointer;
+            border: 3px solid white;
+            font-family: sans-serif;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .popup-content img {
+            width: 100%;
+            border-radius: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .popup-text {
+            margin-top: 15px;
+            font-weight: bold;
+            background: red;
+            color:red;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>"আমার কাজ দেখে যদি তোমার ভালো লেগে থাকে এবং মজা পেয়ে থাকো তাহলে তুমি চাইলে ২০ টাকা প্রদান করে সহযোগিতা করতে পারো।"</h2>
+
+        <div class="btn-stack">
+            <a href="https://rzp.io/rzp/paymentall" target="_blank" class="action-btn pay-now">
+                Pay Now 💳
+            </a>
+
+            <button class="action-btn qr-toggle" onclick="openPopup()">
+                QR Pay 📱
+            </button>
+        </div>
+    </div>
+
+    <div id="qr-popup">
+        <div class="popup-content">
+            <div class="close-x" onclick="closePopup()">X</div>
+            <img src="qr-code.jpg" alt="QR Code">
+            <p class="popup-text">Scan & Pay ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        function openPopup() {
+            const popup = document.getElementById('qr-popup');
+            popup.style.display = 'flex';
+            setTimeout(() => {
+                popup.classList.add('active');
+            }, 10);
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('qr-popup');
+            popup.classList.remove('active');
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 400);
+        }
+
+        // পপ-আপের বাইরে ক্লিক করলে বন্ধ হবে
+        window.onclick = function(event) {
+            const popup = document.getElementById('qr-popup');
+            if (event.target == popup) {
+                closePopup();
+            }
+        }
+    </script>
+
+</body>
+</html>

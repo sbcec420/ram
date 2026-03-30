@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="bn" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mrinal Barman - Premium Plus</title>
+    <style>
+        /* CSS same as mrinal-product-1.html */
+        #loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        .loader-container { text-align: center; }
+        .meesho-m-loader { width: 80px; height: 80px; overflow: visible; }
+        .m-path { fill: none; stroke-width: 12px; stroke-linecap: round; }
+        .bg-path { stroke: #E4C7ED; }
+        .anim-path {
+            stroke: #9c27b0;
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: draw-and-erase 3s ease-in-out infinite;
+        }
+        @keyframes draw-and-erase {
+            0% { stroke-dashoffset: 600; }
+            45% { stroke-dashoffset: 0; }
+            55% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -600; }
+        }
+        .loading-text {
+            margin-top: 15px;
+            color: #777;
+            font-size: 18px;
+            font-weight: 500;
+            font-family: sans-serif;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        @font-face {
+            font-family: "Sabir2";
+            src: url("সাবির ২ UNICODE.ttf");
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #fff;
+            overflow-x: hidden;
+            padding-bottom: 90px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        nav {
+            height: 50px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 1000;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .nav-right {
+            display: flex;
+            gap: 18px;
+        }
+        .icon-img {
+            height: 27px;
+            width: 27px;
+            cursor: pointer;
+        }
+        .carousel-wrapper {
+            width: 100%;
+            overflow-x: auto; 
+            display: flex;
+            border-radius:8px;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .carousel-wrapper::-webkit-scrollbar { display: none; }
+        .carousel-item {
+            min-width: 100%;
+            height: 400px;
+            overflow:hidden;
+            display:flex;
+            justify-content:center;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+        .carousel-item img {
+            width: 244px;
+            height:400px;
+            object-fit: cover;
+        }
+        .dots { margin: 12px 0; display: flex; justify-content: center; gap: 6px; }
+        .dot { width: 13px; height: 4px; background-color: #e0e0e0; border-radius: 2px; transition: 0.3s; }
+        .dot.active { background-color: #9f2089; width: 13px; }
+        .container { padding: 0 15px; }
+        .section-label { font-size: 12px; color: #555; margin-bottom: 10px; font-weight: 500; }
+        .similar-list { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; }
+        .similar-list::-webkit-scrollbar { display: none; }
+        .similar-list a { flex: 0 0 50px; text-decoration: none; }
+        .similar-card { width: 100%; height: 65px; border-radius: 6px; overflow: hidden; border: 1px solid #eee; }
+        .similar-card img { width: 100%; height: 100%; object-fit: cover; }
+        .similar-card.active { border: 2px solid #9f2089; }
+        .product-header { display: flex; justify-content: space-between; margin-top: 15px; }
+        .brand-info h2 { font-size: 18px; font-weight: 600; margin-top:10px; cursor: pointer; }
+        .brand-info p { color: #888; font-size: 10px; }
+        .action-icons { display: flex; gap: 28px; }
+        .action-item { text-align: center; margin-top:18px; font-size: 11px; color: #444; cursor: pointer; }
+        .price-main { font-size: 24px; font-weight: 700; margin-top:-8px; }
+        .offer-text { color: #038d63; font-weight: 600; font-size: 14px; margin-top:13px; margin-bottom:13px; }
+        .rating-badge { background: #038d63; color: white; padding: 4px 9px; border-radius: 170px; font-size: 13px; font-weight: 600; display: inline-block; margin-top: 13px; }
+        .footer { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 12px 17px; border-top: 2.4px solid #e0e0e0; z-index: 2000; }
+        .footer-container { display: flex; gap: 10px; width: 100%; }
+        .footer-btn { flex: 1; height: 47px; display: flex; justify-content: center; align-items: center; text-decoration: none; font-weight: 600; font-size: 15px; border-radius: 5px; border: none; cursor: pointer; }
+        .btn-icon { height: 27px; margin-right: 8px; }
+        .cart-btn { background: #ffffff; color: #9f2089; border: 1.5px solid #9f2089; }
+        .buy-btn { background: #9f2089; color: #ffffff; }
+        .custom-popup-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); 
+            z-index: 9999; display: none; justify-content: center; align-items: center;
+        }
+        .custom-popup-overlay.active { display: flex; }
+        .popup-card {
+            width: 320px; background: #fff; border-radius: 25px;
+            padding: 35px 25px; text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            font-family: "Sabir2", sans-serif;
+        }
+        .popup-emoji-text { 
+            font-size: 65px; 
+            margin-bottom: 15px; 
+            display: block;
+            line-height: 1;
+        } 
+        .popup-message {
+            font-size: 19px; font-weight: 440; line-height: 1.5;
+            color: #259; margin-bottom: 25px;
+        }
+        .highlight-red { color: #ff0000; font-weight: 900; }
+        .popup-ok-btn {
+            background: #800080; color: #fff; border: none;
+            padding: 12px 50px; border-radius: 50px;
+            font-size: 18px; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; font-family: "Sabir2", sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader-overlay">
+        <div class="loader-container">
+            <svg class="meesho-m-loader" viewBox="0 0 100 100">
+                <path class="m-path bg-path" d="M 15 90 V 40 C 15 10, 40 10, 40 40 V 90 V 40 C 40 10, 65 10, 65 40 V 90" />
+                <path class="m-path anim-path" d="M 15 90 V 40 C 15 10, 40 10, 40 40 V 90 V 40 C 40 10, 65 10, 65 40 V 90" />
+            </svg>
+            <div class="loading-text">Please wait...</div>
+        </div>
+    </div>
+
+    <audio id="roastAudio" src="chalaja-vosrike.mp3"></audio>
+
+    <nav>
+        <img src="back.png" class="icon-img" style="margin-left:-7px;" onclick="goBack()">
+        <div class="nav-right">
+            <img src="search2.png" class="icon-img" onclick="openRoast('search')">
+            <img src="wishing-list.png" class="icon-img" onclick="openRoast('wishlist')">
+            <img src="cart.png" class="icon-img" style="height:30px;width:30px;" onclick="openRoast('cart')">
+        </div>
+    </nav>
+
+    <div class="carousel-wrapper" id="carousel">
+        <div class="carousel-item"><img src="mrinal-scroll-5.jpg"></div>
+        <div class="carousel-item"><img src="mrinal-scroll-6.jpg"></div>
+        <div class="carousel-item"><img src="mrinal-scroll-7.jpg"></div>
+        <div class="carousel-item"><img src="mrinal-scroll-8.jpg"></div>
+    </div>
+    
+    <div class="dots" id="dots"></div>
+
+    <div class="container">
+        <p class="section-label">2 Similar Products</p>
+        <div class="similar-list">
+            <a href="mrinal-product-1.html" onclick="playMusic()"><div class="similar-card"><img src="mrinal.jpg"></div></a>
+            <a href="mrinal-product-2.html" onclick="playMusic()"><div class="similar-card active"><img src="mrinal-scroll-5.jpg"></div></a>
+        </div>
+
+        <div class="product-header">
+            <div class="brand-info" onclick="openRoast('profile')">
+                <h2>Mrinal <span style="font-weight:400; color:#777;">Barman</span></h2>
+                <p>premium plus</p>
+            </div>
+            <div class="action-icons">
+                <div class="action-item" onclick="openRoast('wishlist')"><img src="wishing-list.png" style="width:23px;"><br>Wishlist</div>
+                <div class="action-item" onclick="openRoast('share')"><img src="share.png" style="width:25px;"><br>Share</div>
+            </div>
+        </div>
+        
+        <div class="price-box">
+            <br>
+            <div class="price-main">₹1,88,88,888 <span style="font-size:15px; font-weight:400; color:#888;">onwards</span></div>
+            <p class="offer-text">₹1,75,00,000 with 7 Offers</p>
+            <span style="font-weight:400; color:#777;">Free Delivery</span><br>
+            <div class="rating-badge">4.9 ★</div>
+            <span style="font-size:12px; color:#888; margin-left:3px;">(27,890)</span>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-container">
+            <a href="javascript:void(0);" class="footer-btn cart-btn" onclick="openRoast('cart')">
+                <img src="add-to-cart.png" class="btn-icon">
+                Add to Cart
+            </a>
+            <a href="buy.html" class="footer-btn buy-btn" onclick="playMusic()">
+                <img src="buy-now.png" class="btn-icon">
+                Buy Now
+            </a>
+        </div>
+    </div>
+
+    <div id="photoPopupOverlay" class="custom-popup-overlay">
+        <div class="popup-card">
+            <div class="popup-emoji-text" id="pEmoji">🔥</div>
+            <div id="pMsg" class="popup-message"></div>
+            <button class="popup-ok-btn" onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loader-overlay');
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        });
+
+        function playMusic() {
+            const audio = document.getElementById('roastAudio');
+            audio.currentTime = 0;
+            audio.play().catch(e => console.log("Audio play blocked by browser."));
+        }
+
+        function goBack() {
+            playMusic();
+            setTimeout(() => {
+                window.history.back();
+            }, 300);
+        }
+
+        const carousel = document.getElementById('carousel');
+        const dotsContainer = document.getElementById('dots');
+        const items = document.querySelectorAll('.carousel-item');
+        items.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if(i === 0) dot.classList.add('active');
+            dotsContainer.appendChild(dot);
+        });
+        const allDots = document.querySelectorAll('.dot');
+        carousel.addEventListener('scroll', () => {
+            const index = Math.round(carousel.scrollLeft / carousel.offsetWidth);
+            allDots.forEach(d => d.classList.remove('active'));
+            if(allDots[index]) allDots[index].classList.add('active');
+        });
+
+        function openRoast(type) {
+            playMusic();
+            let msg = "";
+            let emoji = "😏"; 
+
+            if(type === 'wishlist') {
+                msg = "Hey <span class='highlight-red'>ভিখারী</span> তোমার account এ এত টাকা নেই তাই Wishing List এ রেখে কোনো লাভ নেই! তুমি শুধু এটা তোমার স্বপ্নের দুনিয়ায় রাখো 🤣";
+                emoji = "🤡"; 
+            } else if(type === 'cart') {
+                msg = "কার্টে ভরে কী হবে? পকেটে তো <span class='highlight-red'>খুচরো পয়সাও</span> নেই! কার্টে তো সব ভরেছো, পেমেন্ট করার সময় কী <span class='highlight-red'>কিডনি বিক্রি</span> করবে? খালি করো বলছি";
+                emoji = "🤣"; 
+            } else if(type === 'profile') {
+                msg = "ব্র্যান্ড নেম দেখে কী হবে? তোমার <span class='highlight-red'>স্ট্যাটাস</span> তো সেই লোকালেই আটকে আছে।";
+                emoji = "🤡"; 
+            } else if(type === 'search') {
+                msg = "খুঁজে কী লাভ? তোর <span class='highlight-red'>কপালটাই পচা</span>! দামী জিনিস তোর লিস্টে মানায় না।";
+                emoji = "🤫"; 
+            } else if(type === 'share') {
+                msg = "শেয়ার করে বন্ধুদের নিজের <span class='highlight-red'>গরিবী</span> দেখাবে নাকি? লজ্জা করো একটু! 🤣";
+                emoji = "💩"; 
+            }
+
+            document.getElementById('pMsg').innerHTML = msg;
+            document.getElementById('pEmoji').innerText = emoji; 
+            document.getElementById('photoPopupOverlay').classList.add('active');
+        }
+
+        function closePopup() {
+            document.getElementById('photoPopupOverlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
